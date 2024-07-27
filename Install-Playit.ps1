@@ -1,26 +1,17 @@
-# Tentukan URL untuk mengunduh playit.gg
-$playitUrl = "https://playit.gg/downloads/playit-windows.zip"
+# Mengunduh playit.gg
+Invoke-WebRequest -Uri "https://playit.gg/downloads/playit-windows.zip" -OutFile "$env:USERPROFILE\playit-windows.zip"
 
-# Tentukan direktori tujuan untuk mengunduh dan mengekstrak playit.gg
-$destinationPath = "$env:USERPROFILE\playit"
-
-# Buat direktori tujuan jika belum ada
-if (-Not (Test-Path -Path $destinationPath)) {
-    New-Item -ItemType Directory -Path $destinationPath
+# Membuat direktori tujuan jika belum ada
+if (-Not (Test-Path -Path "$env:USERPROFILE\playit")) {
+    New-Item -ItemType Directory -Path "$env:USERPROFILE\playit09"
 }
 
-# Tentukan path file zip sementara
-$zipFilePath = "$destinationPath\playit-windows.zip"
-
-# Unduh file zip
-Invoke-WebRequest -Uri $playitUrl -OutFile $zipFilePath
-
-# Ekstrak file zip
+# Ekstrak file zip ke direktori tujuan
 Add-Type -AssemblyName System.IO.Compression.FileSystem
-[System.IO.Compression.ZipFile]::ExtractToDirectory($zipFilePath, $destinationPath)
+[System.IO.Compression.ZipFile]::ExtractToDirectory("$env:USERPROFILE\playit-windows.zip", "$env:USERPROFILE\playit09")
 
 # Hapus file zip setelah ekstraksi
-Remove-Item -Path $zipFilePath
+Remove-Item -Path "$env:USERPROFILE\playit-windows.zip"
 
 # Jalankan playit.gg
-Start-Process -FilePath "$destinationPath\playit\playit.exe"
+Start-Process -FilePath "$env:USERPROFILE\playit\playit09\playit.exe"
