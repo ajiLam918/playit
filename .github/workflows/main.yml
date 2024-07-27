@@ -19,7 +19,7 @@ jobs:
 
     - name: Download playit.gg MSI
       run: |
-        Invoke-WebRequest -Uri "https://playit.gg/downloads/playit-windows.msi" -OutFile "$env:USERPROFILE\Downloads\playit-windows.msi"
+        Invoke-WebRequest -Uri "https://github.com/playit-cloud/playit-agent/releases/download/v0.15.13/playit-windows-x86.msi" -OutFile "$env:USERPROFILE\Downloads\playit-windows.msi"
 
     - name: Install playit.gg
       run: |
