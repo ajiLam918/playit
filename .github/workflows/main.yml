@@ -17,7 +17,34 @@ jobs:
     - run: Set-ItemProperty -Path 'HKLM:\System\CurrentControlSet\Control\Terminal Server\WinStations\RDP-Tcp' -name "UserAuthentication" -Value 1
     - run: Set-LocalUser -Name "runneradmin" -Password (ConvertTo-SecureString -AsPlainText "P@ssw0rd!" -Force)
     
-    - name: Create Tunnel
+    name: Install playit.gg
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  install-playit:
+    runs-on: windows-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v3
+
+    - name: Download playit.gg MSI
       run: |
-         Set-ExecutionPolicy Bypass -Scope Process -Force
-         .\Install-Playit.ps1
+        Invoke-WebRequest -Uri "https://playit.gg/downloads/playit-windows.msi" -OutFile "$env:USERPROFILE\Downloads\playit-windows.msi"
+
+    - name: Install playit.gg
+      run: |
+        Start-Process msiexec.exe -ArgumentList "/i", "$env:USERPROFILE\Downloads\playit-windows.msi", "/quiet", "/norestart" -NoNewWindow -Wait
+
+    - name: Verify installation
+      run: |
+        if (Test-Path "C:\Program Files\playit\playit.exe") {
+          Write-Output "playit.gg installed successfully"
+        } else {
+          Write-Error "playit.gg installation failed"
+        }
+
