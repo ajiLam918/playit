@@ -26,7 +26,7 @@ jobs:
           $id = Get-Content "$env:USERPROFILE\teamviewer_info.log" | Select-String -Pattern "Your ID" | ForEach-Object { $_.Line.Split(':')[1].Trim() }
           Write-Output "TeamViewer ID: $id"
           Write-Output "TeamViewer Password: YourSecurePassword"
-
+        }
     - name: Display TeamViewer Log
       run: |
         Get-Content "$env:USERPROFILE\teamviewer_info.log"
