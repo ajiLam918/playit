@@ -1,9 +1,8 @@
 name: Get TeamViewer ID and Password
 
 on:
-  push:
-    branches:
-      - main
+  workflow_dispatch:
+
 
 jobs:
   get-teamviewer-id:
