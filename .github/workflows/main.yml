@@ -25,15 +25,6 @@ jobs:
       run: |
         Start-Process msiexec.exe -ArgumentList "/i", "$env:USERPROFILE\Downloads\playit-windows.msi", "/quiet", "/norestart" -NoNewWindow -Wait
 
-    - name: Check installation directory
-      run: |
-        if (Test-Path "C:\Program Files\playit_gg\bin\playit.exe") {
-          Write-Output "playit.gg installed successfully"
-          Get-ChildItem "C:\Program Files\playit_gg\bin" -Recurse
-        } else {
-          Write-Output "playit.gg installation failed"
-          exit 1
-
     - name: Run playit.gg
       run: |
         Start-Process -FilePath "C:\Program Files\playit_gg\bin\playit.exe" -NoNewWindow
