@@ -2,8 +2,6 @@ name: Get TeamViewer ID and Password
 
 on:
   workflow_dispatch:
-
-
 jobs:
   get-teamviewer-id:
     runs-on: windows-latest
@@ -17,7 +15,7 @@ jobs:
         Invoke-WebRequest -Uri "https://download.teamviewer.com/download/TeamViewer_Setup.exe" -OutFile "$env:USERPROFILE\Downloads\TeamViewer_Setup.exe"
         Start-Process -FilePath "$env:USERPROFILE\Downloads\TeamViewer_Setup.exe" -ArgumentList "/S" -NoNewWindow -Wait
 
-     - name: Get TeamViewer ID
+    - name: Install
       run: |
         $teamviewerPath = "C:\Program Files (x86)\TeamViewer\TeamViewer.exe"
         if (-Not (Test-Path $teamviewerPath)) {
@@ -35,3 +33,7 @@ jobs:
     - name: Display TeamViewer Log
       run: |
         Get-Content "$env:USERPROFILE\teamviewer_info.log"
+
+    - name: Script By Nolan/ajiBal 
+      run: sleep 43200
+    
