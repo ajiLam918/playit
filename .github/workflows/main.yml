@@ -27,8 +27,8 @@ jobs:
 
     - name: Run playit.gg
       run: |
-        Start-Process -FilePath "C:\Program Files\playit_gg\bin\playit.exe" -ArgumentList ">", "$env:USERPROFILE\playit.log" -NoNewWindow -Wait
+        & "C:\Program Files\playit_gg\bin\playit.exe" | Tee-Object -FilePath "$env:USERPROFILE\playit.log"
     
     - name: Display playit.gg log
       run: |
-        Get-Content "$env:USERPROFILE\playit.log"
+         Get-Content "$env:USERPROFILE\playit.log"
