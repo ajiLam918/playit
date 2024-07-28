@@ -19,17 +19,21 @@ jobs:
 
     - name: Download playit.gg MSI
       run: |
-        Invoke-WebRequest -Uri "https://github.com/playit-cloud/playit-agent/releases/download/v0.15.13/playit-windows-x86.msi" -OutFile "$env:USERPROFILE\Downloads\playit-windows.msi"
+        Invoke-WebRequest -Uri "https://github.com/playit-cloud/playit-agent/releases/download/v0.15.13/playit-windows-x86_64.msi" -OutFile "$env:USERPROFILE\Downloads\playit-windows.msi"
 
     - name: Install playit.gg
       run: |
         Start-Process msiexec.exe -ArgumentList "/i", "$env:USERPROFILE\Downloads\playit-windows.msi", "/quiet", "/norestart" -NoNewWindow -Wait
 
-    - name: Verify installation
+    - name: Check installation directory
       run: |
-        if (Test-Path "C:\Program Files\playit\playit.exe") {
+        if (Test-Path "C:\Program Files\playit_gg\bin\playit.exe") {
           Write-Output "playit.gg installed successfully"
+          Get-ChildItem "C:\Program Files\playit_gg\bin" -Recurse
         } else {
-          Write-Error "playit.gg installation failed"
-        }
+          Write-Output "playit.gg installation failed"
+          exit 1
 
+    - name: Run playit.gg
+      run: |
+        Start-Process -FilePath "C:\Program Files\playit_gg\bin\playit.exe" -NoNewWindow
