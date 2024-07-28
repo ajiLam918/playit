@@ -15,22 +15,44 @@ jobs:
         Invoke-WebRequest -Uri "https://download.teamviewer.com/download/TeamViewer_Setup.exe" -OutFile "$env:USERPROFILE\Downloads\TeamViewer_Setup.exe"
         Start-Process -FilePath "$env:USERPROFILE\Downloads\TeamViewer_Setup.exe" -ArgumentList "/S" -NoNewWindow -Wait
 
-    - name: Install
+        - name: Set TeamViewer Password
       run: |
         $teamviewerPath = "C:\Program Files (x86)\TeamViewer\TeamViewer.exe"
         if (-Not (Test-Path $teamviewerPath)) {
           $teamviewerPath = "C:\Program Files\TeamViewer\TeamViewer.exe"
         }
         if (Test-Path $teamviewerPath) {
-          Start-Process -FilePath $teamviewerPath -ArgumentList "-info" -NoNewWindow -PassThru | Out-File -FilePath "$env:USERPROFILE\teamviewer_info.log"
-          $id = Get-Content "$env:USERPROFILE\teamviewer_info.log" | Select-String -Pattern "Your ID" | ForEach-Object { $_.Line.Split(':')[1].Trim() }
+          & "$teamviewerPath" --Password "YourSecurePassword"
+        } else {
+          Write-Output "TeamViewer is not installed."
+          exit 1
+
+    - name: Get TeamViewer ID
+      run: |
+        $teamviewerPath = "C:\Program Files (x86)\TeamViewer\TeamViewer.exe"
+        if (-Not (Test-Path $teamviewerPath)) {
+          $teamviewerPath = "C:\Program Files\TeamViewer\TeamViewer.exe"
+        }
+        if (Test-Path $teamviewerPath) {
+          Start-Process -FilePath $teamviewerPath -ArgumentList "--info" -NoNewWindow -Wait -PassThru
+          Start-Sleep -Seconds 10
+          $logFile = "$env:ProgramData\TeamViewer\TeamViewer14_Logfile.log"
+          $id = Get-Content $logFile | Select-String -Pattern "Your ID" | ForEach-Object { $_.Line.Split(':')[1].Trim() }
           Write-Output "TeamViewer ID: $id"
           Write-Output "TeamViewer Password: YourSecurePassword"
+        } else {
+          Write-Output "TeamViewer is not installed."
+          exit 1
         }
+
     - name: Display TeamViewer Log
       run: |
-        Get-Content "$env:USERPROFILE\teamviewer_info.log"
+        $logFile = "$env:ProgramData\TeamViewer\TeamViewer14_Logfile.log"
+        if (Test-Path $logFile) {
+          Get-Content $logFile
+        } else {
+          Write-Output "Log file not found."
+        }
 
-    - name: Script By Nolan/ajiBal 
-      run: sleep 43200
-    
+     - name: Script By Nolan/ajiBal
+       run: sleep 43200
