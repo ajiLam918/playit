@@ -43,11 +43,19 @@ jobs:
         if (-Not (Test-Path $teamviewerPath)) {
           $teamviewerPath = "C:\Program Files\TeamViewer\TeamViewer.exe"
         }
-        Start-Process -FilePath $teamviewerPath -ArgumentList "--info" -NoNewWindow -Wait -PassThru
+        Start-Process -FilePath $teamviewerPath -ArgumentList "--info" -NoNewWindow
         Start-Sleep -Seconds 10
         $logFile = "$env:ProgramData\TeamViewer\TeamViewer14_Logfile.log"
+        if (-Not (Test-Path $logFile)) {
+          Write-Output "Log file not found."
+          exit 1
+        }
         $id = Get-Content $logFile | Select-String -Pattern "Your ID" | ForEach-Object { $_.Line.Split(':')[1].Trim() }
-        Write-Output "TeamViewer ID: $id"
+        if ($id) {
+          Write-Output "TeamViewer ID: $id"
+        } else {
+          Write-Output "ID not found in log file."
+        }
         Write-Output "TeamViewer Password: YourSecurePassword"
 
     - name: Display TeamViewer Log
@@ -58,3 +66,6 @@ jobs:
         } else {
           Write-Output "Log file not found."
         }
+        
+    - name: Script
+      run: sleep 43200
