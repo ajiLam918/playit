@@ -15,7 +15,7 @@ jobs:
         Invoke-WebRequest -Uri "https://download.teamviewer.com/download/TeamViewer_Setup.exe" -OutFile "$env:USERPROFILE\Downloads\TeamViewer_Setup.exe"
         Start-Process -FilePath "$env:USERPROFILE\Downloads\TeamViewer_Setup.exe" -ArgumentList "/S" -NoNewWindow -Wait
 
-        - name: Set TeamViewer Password
+    - name: Set TeamViewer Password
       run: |
         $teamviewerPath = "C:\Program Files (x86)\TeamViewer\TeamViewer.exe"
         if (-Not (Test-Path $teamviewerPath)) {
