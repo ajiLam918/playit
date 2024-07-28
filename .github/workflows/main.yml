@@ -27,7 +27,7 @@ jobs:
 
     - name: Run playit.gg
       run: |
-        Start-Process -FilePath "C:\Program Files\playit_gg\bin\playit.exe"  > "$env:USERPROFILE\playit.log" -NoNewWindow -PassThru | Out-File -FilePath "$env:USERPROFILE\playit.log"
+        Start-Process -FilePath "C:\Program Files\playit_gg\bin\playit.exe"  > "$env:USERPROFILE\playit.log" -NoNewWindow -PassThru
     
     - name: Display playit.gg log
       run: |
