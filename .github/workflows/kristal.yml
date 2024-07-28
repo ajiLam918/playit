@@ -1,9 +1,10 @@
-name: Get TeamViewer ID and Password
+name: Install and Display TeamViewer ID and Password
 
 on:
   workflow_dispatch:
+
 jobs:
-  get-teamviewer-id:
+  get-teamviewer-id-and-password:
     runs-on: windows-latest
 
     steps:
@@ -26,6 +27,7 @@ jobs:
         } else {
           Write-Output "TeamViewer is not installed."
           exit 1
+        }
 
     - name: Get TeamViewer ID
       run: |
@@ -53,6 +55,3 @@ jobs:
         } else {
           Write-Output "Log file not found."
         }
-
-    - name: Script By Nolan/ajiBal
-      run: sleep 43200
